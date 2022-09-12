@@ -1,6 +1,7 @@
 package com.dvlm.studiohair.domain;
 
 import com.dvlm.studiohair.domain.enuns.Perfil;
+import com.dvlm.studiohair.dtos.FuncionarioDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
