@@ -48,7 +48,7 @@ public class FuncionarioDTO implements Serializable {
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
         this.senha = obj.getSenha();
-        this.telefone = obj.getEmail();
+        this.telefone = obj.getTelefone();
         this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = obj.getDataCriacao();
         addPerfil(Perfil.FUNCIONARIO);
