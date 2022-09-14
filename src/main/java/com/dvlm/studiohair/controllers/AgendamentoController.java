@@ -5,11 +5,11 @@ import com.dvlm.studiohair.dtos.AgendamentoDTO;
 import com.dvlm.studiohair.services.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +31,12 @@ public class AgendamentoController {
         List<Agendamento> list = service.findAll();
         List<AgendamentoDTO> listDTO = list.stream().map(obj -> new AgendamentoDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<AgendamentoDTO> create(@Valid @RequestBody AgendamentoDTO objdDto) {
+        Agendamento newObj = service.create(objdDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

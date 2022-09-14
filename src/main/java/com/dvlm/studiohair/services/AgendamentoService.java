@@ -1,6 +1,11 @@
 package com.dvlm.studiohair.services;
 
 import com.dvlm.studiohair.domain.Agendamento;
+import com.dvlm.studiohair.domain.Cliente;
+import com.dvlm.studiohair.domain.Funcionario;
+import com.dvlm.studiohair.domain.Servico;
+import com.dvlm.studiohair.domain.enuns.Status;
+import com.dvlm.studiohair.dtos.AgendamentoDTO;
 import com.dvlm.studiohair.repositories.AgendamentoRepository;
 import com.dvlm.studiohair.services.excecoes.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,15 @@ public class AgendamentoService {
     @Autowired
     private AgendamentoRepository repository;
 
+    @Autowired
+    private FuncionarioService funcionarioService;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private ServicoService servicoService;
+
     public Agendamento findById(Integer id) {
         Optional<Agendamento> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! ID: " + id));
@@ -22,5 +36,28 @@ public class AgendamentoService {
 
     public List<Agendamento> findAll() {
         return repository.findAll();
+    }
+
+    public Agendamento create(AgendamentoDTO obj) {
+        return repository.save(newAgendamento(obj));
+    }
+
+    private Agendamento newAgendamento(AgendamentoDTO obj) {
+        Funcionario funcionario = funcionarioService.buscarPeloId(obj.getFuncionario());
+        Cliente cliente = clienteService.findById(obj.getCliente());
+        Servico servico = servicoService.findById(obj.getServico());
+
+        Agendamento agendamento = new Agendamento();
+        if(obj.getId() != null) {
+            agendamento.setId(obj.getId());
+        }
+
+
+        agendamento.setFuncionario(funcionario);
+        agendamento.setCliente(cliente);
+        agendamento.setServico(servico);
+        agendamento.setStatus(Status.toEnum(obj.getStatus()));
+        agendamento.setObservacoes(obj.getObservacoes());
+        return agendamento;
     }
 }

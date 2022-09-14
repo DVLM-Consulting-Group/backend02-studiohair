@@ -1,10 +1,6 @@
 package com.dvlm.studiohair.dtos;
 
 import com.dvlm.studiohair.domain.Agendamento;
-import com.dvlm.studiohair.domain.Cliente;
-import com.dvlm.studiohair.domain.Funcionario;
-import com.dvlm.studiohair.domain.Servico;
-import com.dvlm.studiohair.domain.enuns.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotNull;
