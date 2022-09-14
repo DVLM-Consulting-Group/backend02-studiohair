@@ -39,4 +39,10 @@ public class AgendamentoController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AgendamentoDTO> update(@PathVariable Integer id, @Valid @RequestBody AgendamentoDTO objDTO) {
+        Agendamento newObj = service.update(id, objDTO);
+        return ResponseEntity.ok().body(new AgendamentoDTO(newObj));
+    }
 }

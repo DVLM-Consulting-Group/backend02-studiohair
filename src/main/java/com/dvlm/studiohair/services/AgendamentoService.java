@@ -11,6 +11,7 @@ import com.dvlm.studiohair.services.excecoes.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,13 @@ public class AgendamentoService {
         return repository.save(newAgendamento(obj));
     }
 
+    public Agendamento update(Integer id, AgendamentoDTO objDTO) {
+        objDTO.setId(id);
+        Agendamento oldObj = findById(id);
+        oldObj = newAgendamento(objDTO);
+        return repository.save(oldObj);
+    }
+
     private Agendamento newAgendamento(AgendamentoDTO obj) {
         Funcionario funcionario = funcionarioService.buscarPeloId(obj.getFuncionario());
         Cliente cliente = clienteService.findById(obj.getCliente());
@@ -52,6 +60,10 @@ public class AgendamentoService {
             agendamento.setId(obj.getId());
         }
 
+        if(obj.getStatus().equals(1)) {
+            agendamento.setDataExServico(LocalDateTime.now());
+        }
+
 
         agendamento.setFuncionario(funcionario);
         agendamento.setCliente(cliente);
@@ -60,4 +72,6 @@ public class AgendamentoService {
         agendamento.setObservacoes(obj.getObservacoes());
         return agendamento;
     }
+
+
 }
