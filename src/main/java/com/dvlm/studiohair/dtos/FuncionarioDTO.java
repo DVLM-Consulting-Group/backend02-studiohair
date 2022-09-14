@@ -5,8 +5,7 @@ import com.dvlm.studiohair.domain.enuns.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -19,18 +18,18 @@ public class FuncionarioDTO implements Serializable {
 
     protected Integer id;
 
-    @NotEmpty(message = "O campo nome é obrigatório!")
+    @NotNull(message = "O campo nome é obrigatório!")
     protected String nome;
 
     @CPF
-    @NotEmpty(message = "O campo cpf é obrigatório!")
+    @NotNull(message = "O campo cpf é obrigatório!")
     protected String cpf;
 
-    @Column(unique = true)
+    @NotNull(message = "O campo email é obrigatório!")
     protected String email;
+    @NotNull(message = "O campo senha é obrigatório!")
     protected String senha;
 
-    @NotEmpty(message = "O campo telefone é obrigatório!")
     protected String telefone;
 
     protected Set<Integer> perfis = new HashSet<>();
@@ -49,7 +48,7 @@ public class FuncionarioDTO implements Serializable {
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
         this.senha = obj.getSenha();
-        this.telefone = obj.getTelefone();
+        this.telefone = obj.getEmail();
         this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = obj.getDataCriacao();
         addPerfil(Perfil.FUNCIONARIO);

@@ -13,28 +13,33 @@ import java.util.stream.Collectors;
 
 @Entity
 public abstract class Pessoa implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
     protected String nome;
-    @Column(unique = true) // Confirmando que só terá 1 CPF único, ou seja , não pode haver 2 CPFs iguais.
+
+
+    @Column(unique = true)
     protected String cpf;
-    @Column(unique = true) // Confirmando que só terá 1 e-mail único, ou seja , não pode haver 2 e-mails iguais.
+
+    @Column(unique = true)
     protected String email;
     protected String senha;
+
     protected String telefone;
-    @ElementCollection(fetch = FetchType.EAGER) // Confirmando que a minha lista de perfis virá junto com o usuário
-    @CollectionTable(name = "PERFIS") // haverá uma tabela no banco apenas com os PERFIS
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PERFIS")
     protected Set<Integer> perfis = new HashSet<>();
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     protected LocalDateTime dataCriacao = LocalDateTime.now();
 
     public Pessoa() {
         super();
-        addPerfil(Perfil.CLIENTE);
+
     }
 
     public Pessoa(Integer id, String nome, String cpf, String email, String senha, String telefone) {
@@ -45,6 +50,7 @@ public abstract class Pessoa implements Serializable {
         this.senha = senha;
         this.telefone = telefone;
         addPerfil(Perfil.CLIENTE);
+
     }
 
     public Integer getId() {
@@ -103,6 +109,7 @@ public abstract class Pessoa implements Serializable {
         this.perfis.add(perfil.getCodigo());
     }
 
+
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
@@ -116,7 +123,7 @@ public abstract class Pessoa implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
-        return id.equals(pessoa.id) && cpf.equals(pessoa.cpf);
+        return Objects.equals(id, pessoa.id) && Objects.equals(cpf, pessoa.cpf);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class DBService {
 
         Funcionario f2 = new Funcionario(null,"Diego Dutra","456.123.023-50",
                 "diego@gmail.com","123456", "(12) 92569-4136");
-        f1.addPerfil(Perfil.ADMIN);
+        f2.addPerfil(Perfil.ADMIN);
 
         Agendamento a1 = new Agendamento(null, "Observação", Status.ABERTO, f1, s1, c1);
 
