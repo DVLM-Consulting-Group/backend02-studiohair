@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class Servico implements Serializable {
@@ -13,9 +14,11 @@ public class Servico implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nomeServico;
     private String descricaoServico;
     private Double precoServico;
+
 
     public Servico(){
         super();
@@ -26,6 +29,7 @@ public class Servico implements Serializable {
         this.nomeServico = nomeServico;
         this.descricaoServico = descricaoServico;
         this.precoServico = precoServico;
+
     }
 
     public Integer getId() {
@@ -58,5 +62,19 @@ public class Servico implements Serializable {
 
     public void setPrecoServico(Double precoServico) {
         this.precoServico = precoServico;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Servico servico = (Servico) o;
+        return Objects.equals(id, servico.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
