@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-public class Funcionario extends Pessoa {
-    private static final long serialVersionUID = 1L;
+public class Funcionario extends Pessoa implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "funcionario")

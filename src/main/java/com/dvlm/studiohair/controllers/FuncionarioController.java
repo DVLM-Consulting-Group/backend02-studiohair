@@ -22,9 +22,9 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FuncionarioDTO> buscarPeloId(@PathVariable Integer id){
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO(funcionarioService.buscarPeloId(id));
-        return ResponseEntity.ok().body(funcionarioDTO);
+    public ResponseEntity<FuncionarioDTO> buscarPeloId(@PathVariable Integer id) {
+        Funcionario obj = funcionarioService.buscarPeloId(id);
+        return ResponseEntity.ok().body(new FuncionarioDTO(obj));
     }
 
     @GetMapping
