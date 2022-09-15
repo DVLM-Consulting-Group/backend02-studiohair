@@ -5,6 +5,7 @@ import com.dvlm.studiohair.dtos.FuncionarioDTO;
 import com.dvlm.studiohair.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,19 +37,20 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(listaDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<FuncionarioDTO> criarNovoFuncionario(@Valid @RequestBody FuncionarioDTO objDTO){
         Funcionario newObj = funcionarioService.criarNovoFuncionario(objDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDTO> update(@PathVariable Integer id, @Valid @RequestBody FuncionarioDTO objDTO) {
         Funcionario obj = funcionarioService.update(id, objDTO);
         return ResponseEntity.ok().body(new FuncionarioDTO(obj));
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDTO> delete(@PathVariable Integer id) {
         funcionarioService.delete(id);
