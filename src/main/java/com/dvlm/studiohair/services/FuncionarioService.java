@@ -5,9 +5,10 @@ import com.dvlm.studiohair.domain.Pessoa;
 import com.dvlm.studiohair.dtos.FuncionarioDTO;
 import com.dvlm.studiohair.repositories.FuncionarioRepository;
 import com.dvlm.studiohair.repositories.PessoaRepository;
+import com.dvlm.studiohair.services.excecoes.DataIntegrityViolationException;
 import com.dvlm.studiohair.services.excecoes.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.dvlm.studiohair.services.excecoes.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class FuncionarioService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-//    @Autowired
-//    private BCryptPasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public  Funcionario buscarPeloId(Integer id){
         Optional<Funcionario> obj = funcionarioRepository.findById(id); //pode encontrar ou não!
@@ -37,7 +38,7 @@ public class FuncionarioService {
 
     public Funcionario criarNovoFuncionario(FuncionarioDTO objDto){
         objDto.setId(null);
-//        objDto.setSenha(encoder.encode(objDto.getSenha()));
+        objDto.setSenha(encoder.encode(objDto.getSenha()));
         validaPorCpfEEmail(objDto);
         Funcionario newObj = new Funcionario(objDto);
         return funcionarioRepository.save(newObj);
@@ -69,8 +70,8 @@ public class FuncionarioService {
         objDTO.setId(id);
         Funcionario oldObj = buscarPeloId(id);
 
-//        if(!objDTO.getSenha().equals(oldObj.getSenha()))
-//            objDTO.setSenha(encoder.encode(objDTO.getSenha()));
+        if(!objDTO.getSenha().equals(oldObj.getSenha()))
+            objDTO.setSenha(encoder.encode(objDTO.getSenha()));
 
         validaPorCpfEEmail(objDTO);
         oldObj = new Funcionario(objDTO);

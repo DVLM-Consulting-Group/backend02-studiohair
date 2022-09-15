@@ -46,10 +46,5 @@ public class ServicoController {
         return ResponseEntity.ok().body(newObj);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
 
 }

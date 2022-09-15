@@ -37,7 +37,4 @@ public class ServicoService {
         return repository.save(newObj);
     }
 
-    public void delete(Integer id) {
-        repository.deleteById(id);
-    }
 }

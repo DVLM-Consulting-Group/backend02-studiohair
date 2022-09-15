@@ -8,6 +8,7 @@ import com.dvlm.studiohair.repositories.PessoaRepository;
 import com.dvlm.studiohair.services.excecoes.DataIntegrityViolationException;
 import com.dvlm.studiohair.services.excecoes.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -21,8 +22,8 @@ public class ClienteService {
     private ClienteRepository repository;
     @Autowired
     private PessoaRepository pessoaRepository;
-//    @Autowired
-//    private BCryptPasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Cliente findById(Integer id) {
         Optional<Cliente> obj = repository.findById(id);
@@ -45,8 +46,8 @@ public class ClienteService {
         objDTO.setId(id);
         Cliente oldObj = findById(id);
 
-//        if(!objDTO.getSenha().equals(oldObj.getSenha()))
-//            objDTO.setSenha(encoder.encode(objDTO.getSenha()));
+        if (!objDTO.getSenha().equals(oldObj.getSenha()))
+            objDTO.setSenha(encoder.encode(objDTO.getSenha()));
 
         validaPorCpfEEmail(objDTO);
         oldObj = new Cliente(objDTO);
