@@ -29,27 +29,30 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> buscarTodos(){
+    public ResponseEntity<List<FuncionarioDTO>> buscarTodos() {
 
-        List<FuncionarioDTO> listaDTO =funcionarioService.buscarTodos().stream()
+        List<FuncionarioDTO> listaDTO = funcionarioService.buscarTodos().stream()
                 .map(func -> new FuncionarioDTO(func)).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
     }
 
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<FuncionarioDTO> criarNovoFuncionario(@Valid @RequestBody FuncionarioDTO objDTO){
+    public ResponseEntity<FuncionarioDTO> criarNovoFuncionario(@Valid @RequestBody FuncionarioDTO objDTO) {
         Funcionario newObj = funcionarioService.criarNovoFuncionario(objDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDTO> update(@PathVariable Integer id, @Valid @RequestBody FuncionarioDTO objDTO) {
         Funcionario obj = funcionarioService.update(id, objDTO);
         return ResponseEntity.ok().body(new FuncionarioDTO(obj));
     }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDTO> delete(@PathVariable Integer id) {
